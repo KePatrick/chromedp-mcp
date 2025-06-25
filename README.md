@@ -42,9 +42,15 @@ This MCP server currently provides the following tool:
    ```
 
 2. Build the project:
+   **Windows**
    ```bash
-   go build .
+   go build -o chromedp-mcp.exe .\cmd\chromedp-mcp\main.go
    ```
+   **Linux/MacOs**
+   ```bash
+   go build -o chromedp-mcp ./cmd/chromedp-mcp/main.go
+   ```
+
 
 3. Configure MCP settings:
    ```json

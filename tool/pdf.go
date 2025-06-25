@@ -1,4 +1,4 @@
-package main
+package tool
 
 import (
 	"context"
@@ -11,19 +11,10 @@ import (
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/mark3labs/mcp-go/server"
 )
 
-func main() {
-	// Create a new MCP server
-    s := server.NewMCPServer(
-        "chromedp-mcp",
-        "1.0.0",
-        server.WithToolCapabilities(false),
-    )
-
-	// Add tool
-	tool := mcp.NewTool("generate_pdf",
+func NewPdfTool() mcp.Tool {
+	return mcp.NewTool("generate_pdf",
 		mcp.WithDescription("Generate PDF from HTML content or URL"),
 		mcp.WithString("html",
 			mcp.Description("HTML string to generate PDF from"),
@@ -35,19 +26,10 @@ func main() {
 			mcp.Description("Output directory path for the PDF file"),
 			),
 		)
-
-	s.AddTool(tool, genPdfHandler)
-
-	// Start the stdio server
-    if err := server.ServeStdio(s); err != nil {
-        fmt.Printf("Server error: %v\n", err)
-    }
-
 }
 
 
-
-func genPdfHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func GenPdfHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	html := request.GetString("html", "")
 	url := request.GetString("url", "")
 
@@ -114,13 +96,18 @@ func genPdfHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 	if err != nil {
 		return nil, fmt.Errorf("PDF generation failed: %v", err)
 	}
+
+	if outputPath == "" {
+		return nil, fmt.Errorf("outputPath is not available %s", outputPath)
+	}
 	
 	// Write PDF file
 	if err := os.WriteFile(outputPath, buf, 0644); err != nil {
 		return nil, fmt.Errorf("cannot write PDF file %s: %v", outputPath, err)
 	}
 	
-	return mcp.NewToolResultText(fmt.Sprintf("PDF generation completed! Output path: %s", outputPath)), nil
+
+	return mcp.NewToolResultText(fmt.Sprintf("PDF generation completed! Output path: %s", outputPath)), nil	
 }
 
 // Generate PDF from URL
