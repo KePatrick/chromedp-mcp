@@ -47,7 +47,9 @@ func main() {
 	s.AddTool(tool.NewCreateInstanceTool(), tool.CreateInstanceHandler)
 	s.AddTool(tool.NewCloseInstanceTool(), tool.CloseInstanceHandler)
 	s.AddTool(tool.NewNavigateTool(), tool.NavigateHandler)
-
+	s.AddTool(tool.NewGetElementTool(), tool.GetElementHandler)
+	s.AddTool(tool.NewClickElementTool(), tool.ClickElementHandler)
+	s.AddTool(tool.NewAllElementTool(), tool.AllElementHandler)
 	// Start the stdio server
     if err := server.ServeStdio(s); err != nil {
         fmt.Printf("Server error: %v\n", err)
