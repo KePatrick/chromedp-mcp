@@ -40,7 +40,7 @@ func NavigateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Cal
 	var cleanHTML string
 	err := cdp.Manager.Execute(id,
 		chromedp.Navigate(url),
-						chromedp.Evaluate(`
+		chromedp.Evaluate(`
 			(() => {
 			const MAX_DEPTH = 10;
 

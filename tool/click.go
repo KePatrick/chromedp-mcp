@@ -53,6 +53,14 @@ func ClickElementHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 		return mcp.NewToolResultError("Chrome instance ID is required"), nil
 	}
 
+	var elements []*cdp.Node
+	err := mcpcdp.Manager.Execute(instanceID, 
+		chromedp.Nodes(selector, &elements),
+		)
+	if err != nil || len(elements) < 1{
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+	}
+
 	// Validate click type
 	validClickTypes := map[string]bool{
 		"left":   true,

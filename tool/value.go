@@ -54,7 +54,7 @@ func SetValueHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Cal
 	}
 
 	if len(elements) == 0 {
-		return mcp.NewToolResultText(fmt.Sprintf("No elements found with selector: %s", selector)), nil
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
 	}
 
 	htmlResults, err := convertNodesToHTML(id, elements)

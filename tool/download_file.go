@@ -61,6 +61,14 @@ func DownloadFileHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 		return mcp.NewToolResultError("Chrome instance id is required"), nil
 	}
 
+	var elements []*cdp.Node
+	err := mcpcdp.Manager.Execute(id, 
+		chromedp.Nodes(selector, &elements),
+		)
+	if err != nil || len(elements) < 1{
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+	}
+
 	// Set up download directory
 	var downloadDir string
 	// Ensure download directory exists
@@ -69,7 +77,6 @@ func DownloadFileHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 	}
 	downloadDir, _ = filepath.Abs(downloadPath)
 
-	var elements []*cdp.Node
 	var downloadGUID string
 
 	// Create execution tasks
@@ -110,7 +117,7 @@ func DownloadFileHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 	// Click download element
 	tasks = append(tasks, chromedp.Click(selector))
 
-	err := mcpcdp.Manager.Execute(id, tasks...)
+	err = mcpcdp.Manager.Execute(id, tasks...)
 	if err != nil {
 		return nil, fmt.Errorf("error happen when execute download, err: %v", err)
 	}
