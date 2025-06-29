@@ -43,9 +43,15 @@ func SetValueHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Cal
 	if value == "" {
 		return mcp.NewToolResultError("value is required"), nil
 	}
-
 	var elements []*cdp.Node
-	err := mcpcdp.Manager.Execute(id,
+	err := mcpcdp.Manager.Execute(id, 
+		chromedp.Nodes(selector, &elements),
+		)
+	if err != nil || len(elements) < 1{
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+	}
+
+	err = mcpcdp.Manager.Execute(id,
 		chromedp.SetValue(selector, value),
 		chromedp.Nodes(selector, &elements),
 	)
