@@ -2,20 +2,17 @@ package tool
 
 import (
 	"context"
+	"time"
 
-	cdp "patrickke/chromedp-mcp/chromedp"
+	mcpcdp "patrickke/chromedp-mcp/chromedp"
 
 	"github.com/chromedp/chromedp"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-func NewNavigateTool() mcp.Tool {
-	return mcp.NewTool("navigate",
-		mcp.WithDescription("Navigate to provide url, you should create a instance before operation"),
-		mcp.WithString("url",
-			mcp.Required(),
-			mcp.Description("The URL to navigate"),
-			),
+func NewAllElementTool() mcp.Tool {
+	return mcp.NewTool("get-all-elements",
+		mcp.WithDescription("Get all elements of current page"),
 		mcp.WithString("id",
 			mcp.Required(),
 			mcp.Description("Chrome instance id"),
@@ -23,26 +20,21 @@ func NewNavigateTool() mcp.Tool {
 		)
 }
 
-func NavigateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error){
-	url := request.GetString("url", "")
-
-	if url == "" {
-		return mcp.NewToolResultError("url parameter is required"), nil
-	}
-
+func AllElementHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error){
 	id := request.GetString("id", "")
 
 	if id == "" {
 		return mcp.NewToolResultError("Chrome instance ID is required"), nil
 	}
 
-
 	var cleanHTML string
-	err := cdp.Manager.Execute(id,
-		chromedp.Navigate(url),
-						chromedp.Evaluate(`
+	
+	err := mcpcdp.Manager.Execute(id,
+		chromedp.Sleep(500*time.Millisecond),
+		chromedp.WaitReady("body"),
+		chromedp.Evaluate(`
 			(() => {
-			const MAX_DEPTH = 10;
+			const MAX_DEPTH = 25;
 
 			function cleanElement(element, depth = 0) {
 			if (depth > MAX_DEPTH) {
@@ -82,7 +74,27 @@ func NavigateHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Cal
 			}
 			})()
 			`, &cleanHTML),
-		)
+		// chromedp.Evaluate(`
+		// 	(() => {
+		// 		function cleanElement(element) {
+		// 			const newEl = document.createElement(element.tagName);
+		// 			Array.from(element.attributes).forEach(attr => {
+		// 				newEl.setAttribute(attr.name, attr.value);
+		// 			});
+		// 			Array.from(element.children).forEach(child => {
+		// 				if (!['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(child.tagName)) {
+		// 					const cleanChild = cleanElement(child);
+		// 					newEl.appendChild(cleanChild);
+		// 				}
+		// 			});
+		// 			return newEl;
+		// 		}
+		//
+		// 		const cleanBody = cleanElement(document.body);
+		// 		return cleanBody.outerHTML;
+		// 	})()
+		// `, &cleanHTML),
+	)
 
 	if (err != nil) {
 		return nil, err

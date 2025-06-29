@@ -19,14 +19,21 @@ func main() {
         server.WithToolCapabilities(false),
     )
 
-	maximumInstance := os.Getenv("MAXIMUM_INSTANCE")
-	ttlStr := os.Getenv("TTL")
+	maximumInstance := os.Getenv("CHROME_MAXIMUM_INSTANCE")
+	ttlStr := os.Getenv("CHROME_TTL")
+	executeTimeout := os.Getenv("CHROME_EXE_TIMEOUT")
 	if maximumInstance == "" {
 		maximumInstance = "5"
 	}
 
+	
+
 	if ttlStr == "" {
 		ttlStr = "15"
+	}
+
+	if executeTimeout == "" {
+		executeTimeout = "300"
 	}
 
 	maximum,err := strconv.Atoi(maximumInstance)
@@ -39,7 +46,12 @@ func main() {
 		ttl = 15
 	}
 
-	chromedp.InitManager(maximum, time.Duration(ttl)*time.Minute)
+	timeout, err := strconv.Atoi(executeTimeout) 
+	if err != nil {
+		timeout = 300
+	}
+
+	chromedp.InitManager(maximum, time.Duration(ttl)*time.Minute, time.Duration(timeout)*time.Second)
 
 	// Add tool
 	pdfTool := tool.NewPdfTool()
@@ -50,6 +62,11 @@ func main() {
 	s.AddTool(tool.NewGetElementTool(), tool.GetElementHandler)
 	s.AddTool(tool.NewClickElementTool(), tool.ClickElementHandler)
 	s.AddTool(tool.NewAllElementTool(), tool.AllElementHandler)
+	s.AddTool(tool.NewSetCookieTool(), tool.SetCookieHandler)
+	s.AddTool(tool.NewSendKeyTool(), tool.SendKeyHandler)
+	s.AddTool(tool.NewSetValueTool(), tool.SetValueHandler)
+	s.AddTool(tool.NewKeyEventTool(), tool.KeyEventHandler)
+	s.AddTool(tool.NewDownloadFileTool(), tool.DownloadFileHandler)
 	// Start the stdio server
     if err := server.ServeStdio(s); err != nil {
         fmt.Printf("Server error: %v\n", err)

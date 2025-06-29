@@ -18,6 +18,7 @@ type ChromeManager struct {
 	ttl       time.Duration
 	stopChan  chan struct{} 
 	once      sync.Once
+	executeTimeout	  time.Duration
 }
 
 type ChromeInstance struct {
@@ -29,16 +30,17 @@ type ChromeInstance struct {
 
 var Manager ChromeManager
 
-func InitManager(maximum int, ttl time.Duration){
-	Manager = *NewChromeManager(maximum, ttl)
+func InitManager(maximum int, ttl time.Duration, timeout time.Duration){
+	Manager = *NewChromeManager(maximum, ttl, timeout)
 }
 
-func NewChromeManager(maximum int, ttl time.Duration) *ChromeManager {
+func NewChromeManager(maximum int, ttl time.Duration, timeout time.Duration) *ChromeManager {
 	cm := &ChromeManager{
 		instances: make(map[string]*ChromeInstance, maximum),
 		maximum:   maximum,
 		ttl:       ttl,
 		stopChan:  make(chan struct{}),
+		executeTimeout: timeout,
 	}
 	
 	// Start background goroutine for automatic cleanup
@@ -244,7 +246,18 @@ func (cm *ChromeManager) Execute(id string, actions ...chromedp.Action) error {
 		return err
 	}
 	
-	return chromedp.Run(instance.Context, actions...)
+	done := make(chan error, 1)
+	
+	go func() {
+		done <- chromedp.Run(instance.Context, actions...)
+	}()
+	
+	select {
+	case err := <-done:
+		return err
+	case <-time.After(cm.executeTimeout):
+		return fmt.Errorf("chromedp execute timeout: %v", cm.executeTimeout)
+	}
 }
 
 // ExecuteWithTimeout runs ChromeDP actions with a timeout on a specific instance
