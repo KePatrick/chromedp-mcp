@@ -54,19 +54,38 @@ func main() {
 	chromedp.InitManager(maximum, time.Duration(ttl)*time.Minute, time.Duration(timeout)*time.Second)
 
 	// Add tool
-	pdfTool := tool.NewPdfTool()
-	s.AddTool(pdfTool, tool.GenPdfHandler)
+	
+	s.AddTool(tool.NewTipsTool(), tool.TipsHandler)
+	// Instance Management
 	s.AddTool(tool.NewCreateInstanceTool(), tool.CreateInstanceHandler)
 	s.AddTool(tool.NewCloseInstanceTool(), tool.CloseInstanceHandler)
+
+	// Page Navigation
 	s.AddTool(tool.NewNavigateTool(), tool.NavigateHandler)
+	s.AddTool(tool.NewNavigateBackTool(), tool.NavigateBackHandler)
+	s.AddTool(tool.NewNavigateForwardTool(), tool.NavigateForwardHandler)
+
+	// Element Operations
 	s.AddTool(tool.NewGetElementTool(), tool.GetElementHandler)
-	s.AddTool(tool.NewClickElementTool(), tool.ClickElementHandler)
 	s.AddTool(tool.NewAllElementTool(), tool.AllElementHandler)
-	s.AddTool(tool.NewSetCookieTool(), tool.SetCookieHandler)
+	s.AddTool(tool.NewClickElementTool(), tool.ClickElementHandler)
+	s.AddTool(tool.NewSelectElementTool(), tool.SelectElementHandler)
+
+	// Input Operations
 	s.AddTool(tool.NewSendKeyTool(), tool.SendKeyHandler)
 	s.AddTool(tool.NewSetValueTool(), tool.SetValueHandler)
 	s.AddTool(tool.NewKeyEventTool(), tool.KeyEventHandler)
+
+	// Cookie Management
+	s.AddTool(tool.NewSetCookieTool(), tool.SetCookieHandler)
+
+	// File Downloads
 	s.AddTool(tool.NewDownloadFileTool(), tool.DownloadFileHandler)
+	s.AddTool(tool.NewDownloadImageTool(), tool.DownloadImageHandler)
+
+	// Document Generation
+	s.AddTool(tool.NewPdfTool(), tool.GenPdfHandler)
+
 	// Start the stdio server
     if err := server.ServeStdio(s); err != nil {
         fmt.Printf("Server error: %v\n", err)

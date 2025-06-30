@@ -12,10 +12,13 @@ import (
 
 func NewAllElementTool() mcp.Tool {
 	return mcp.NewTool("get-all-elements",
-		mcp.WithDescription("Get all elements of current page"),
+		mcp.WithDescription("Get all elements of current page, return a clean DOM element tree structure without scripts/styles and textContent"),
 		mcp.WithString("id",
 			mcp.Required(),
 			mcp.Description("Chrome instance id"),
+			),
+		mcp.WithNumber("depth", 
+			 mcp.Description("Maximum DOM tree depth to traverse (default: 5)"),
 			),
 		)
 }
@@ -27,53 +30,14 @@ func AllElementHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.C
 		return mcp.NewToolResultError("Chrome instance ID is required"), nil
 	}
 
+	depth := max(request.GetInt("depth", 5), 0)
+
 	var cleanHTML string
 	
 	err := mcpcdp.Manager.Execute(id,
 		chromedp.Sleep(500*time.Millisecond),
 		chromedp.WaitReady("body"),
-		chromedp.Evaluate(`
-			(() => {
-			const MAX_DEPTH = 25;
-
-			function cleanElement(element, depth = 0) {
-			if (depth > MAX_DEPTH) {
-			const placeholder = document.createElement('div');
-			placeholder.textContent = '[Content truncated - too deep]';
-			return placeholder;
-			}
-
-			const newEl = document.createElement(element.tagName);
-
-			Array.from(element.attributes).forEach(attr => {
-			try {
-			newEl.setAttribute(attr.name, attr.value);
-			} catch (e) {
-			}
-			});
-
-			Array.from(element.children).forEach(child => {
-			if (!['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(child.tagName)) {
-			try {
-			const cleanChild = cleanElement(child, depth + 1);
-			newEl.appendChild(cleanChild);
-			} catch (e) {
-			}
-			}
-			});
-
-			return newEl;
-			}
-
-			try {
-			const cleanBody = cleanElement(document.body);
-			return cleanBody.outerHTML;
-			} catch (error) {
-			console.error('DOM cleaning failed:', error);
-			return "<div>Error: " + error.message + "</div>";
-			}
-			})()
-			`, &cleanHTML),
+		chromedp.Evaluate(cleanElement(depth), &cleanHTML),
 		// chromedp.Evaluate(`
 		// 	(() => {
 		// 		function cleanElement(element) {
