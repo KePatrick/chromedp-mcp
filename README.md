@@ -1,7 +1,7 @@
 
 # chromedp-mcp
 
-A Model Context Protocol (MCP) server that provides browser automation capabilities using ChromeDP. This server enables AI assistants to interact with web pages, manage browser instances, and perform various web automation tasks.
+A Model Context Protocol (MCP) server that provides browser automation capabilities using chromedp. This server enables AI assistants to interact with web pages, manage browser instances, and perform various web automation tasks.
 
 ## ⚠️ Development Status
 
