@@ -12,7 +12,7 @@ import (
 )
 
 func NewCreateInstanceTool() mcp.Tool {
-	return mcp.NewTool("create_chrome_instance",
+	return mcp.NewTool("create-chrome-instance",
 		mcp.WithDescription("Create Chrome Instance, every session should start by create_chrome_instance and end by end_chrome_instance"),
 		mcp.WithBoolean("headless",
 			mcp.Description("Headless mode flag for create chrome instance (default: true)"),
