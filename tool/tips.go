@@ -7,7 +7,7 @@ import (
 
 func NewTipsTool() mcp.Tool {
 	return mcp.NewTool("tips",
-		mcp.WithDescription("Get important usage tips and best practices for Chrome automation tools"),
+		mcp.WithDescription("Get important usage tips and best practices for Chrome automation tools, see this before you start"),
 	)
 }
 
