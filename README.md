@@ -65,7 +65,7 @@ For detailed tool specifications,and parameters, see [Tools Specification](doc/t
 
 ### Input Operations
 - **`send-key`** - Send keyboard input to specified elements
-- **`set-value`** - Directly set the value of form elements (more efficient than send-key)
+- **`set-value`** - Directly set the value of form elements
 - **`key-event`** - Send specific keyboard events and combinations with modifier keys
 
 ### Cookie Management
