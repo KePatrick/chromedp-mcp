@@ -83,6 +83,9 @@ func main() {
 	s.AddTool(tool.NewDownloadFileTool(), tool.DownloadFileHandler)
 	s.AddTool(tool.NewDownloadImageTool(), tool.DownloadImageHandler)
 
+	// Screenshot
+	s.AddTool(tool.NewScreenshotTool(), tool.ScreenshotHandler)
+
 	// Document Generation
 	s.AddTool(tool.NewPdfTool(), tool.GenPdfHandler)
 

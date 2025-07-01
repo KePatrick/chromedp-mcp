@@ -18,6 +18,7 @@ A Model Context Protocol (MCP) server that provides browser automation capabilit
 - **File Operations**: Download files and images from web pages
 - **PDF Generation**: Convert web pages or HTML content to PDF documents
 - **Keyboard Simulation**: Send keyboard events, key combinations, and modifier keys with comprehensive key support
+- **Screen Capture**: Take screenshots of web pages for visual analysis
 - **DOM Tree Extraction**: Get clean DOM structures without scripts/styles for analysis
 
 ## Available Tools
@@ -38,6 +39,11 @@ For detailed tool specifications,and parameters, see [Tools Specification](doc/t
 - **`get-all-elements`** - Get all elements of current page as clean DOM tree structure
 - **`select-element`** - Select element by CSS selector and return clean DOM structure at specified depth
 - **`click-element`** - Click on an element with support for different click types (left, right, double)
+
+### Visual Information Access
+
+- **`screenshot`** - Capture screenshots of web pages for visual analysis and layout understanding
+
 
 ### Input Operations
 - **`send-key`** - Send keyboard input to specified elements
