@@ -107,7 +107,7 @@ This document provides detailed specifications for all available tools in the Ch
 **Parameters**:
 - `selector` (string, required): The selector to identify the element. Examples: '#button-id', '.button-class', 'button[type="submit"]', '//button[@id="submit"]'
 - `id` (string, required): Chrome instance ID
-- `depth` (number, optional): Maximum depth to traverse from selected element (default: 3, max: 10)
+- `depth` (number, optional): Maximum depth to traverse from selected element (default: 3)
 - `all` (boolean, optional): Select all matching elements instead of just the first one (default: false)
 
 **Returns**: Clean DOM structure at specified depth
