@@ -21,6 +21,24 @@ A Model Context Protocol (MCP) server that provides browser automation capabilit
 - **Screen Capture**: Take screenshots of web pages for visual analysis
 - **DOM Tree Extraction**: Get clean DOM structures without scripts/styles for analysis
 
+## LLM Decision Support
+
+**chromedp-mcp** provides web page information to LLMs, enabling AI to make decisions:
+
+### Visual Information
+**Provided through `screenshot` tool:**
+- **Complete page screenshots**: Actual visual representation of web pages including layout, colors, images
+- **Element positioning**: LLMs can see exact positions and appearance of buttons, links, forms and other elements
+- **Page state identification**: Detect loading states, popups, error messages and other visual indicators
+- **Responsive layout understanding**: Comprehend page presentation across different viewport sizes
+
+### Structured Information  
+**Provided through DOM-related tools:**
+- **Clean DOM structure** (`get-all-elements`): Pure HTML structure with scripts and styles removed
+- **Specific element details** (`select-element`): Element tree structure at specified depth
+- **Text content extraction** (`get-element-withtext`): Element information containing specific text
+- **Element attribute data**: ID, class, data-* and other attribute values
+
 ## Available Tools
 
 For detailed tool specifications,and parameters, see [Tools Specification](doc/tools-spec.md)
