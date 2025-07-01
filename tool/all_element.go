@@ -12,7 +12,7 @@ import (
 
 func NewAllElementTool() mcp.Tool {
 	return mcp.NewTool("get-all-elements",
-		mcp.WithDescription("Get all elements of current page, return a clean DOM element tree structure without scripts/styles and textContent"),
+		mcp.WithDescription("Get all elements of current page, return a clean DOM element tree structure without scripts/styles and textContent, if content is truncated, call the select-element tool to get a deeper DOM tree"),
 		mcp.WithString("id",
 			mcp.Required(),
 			mcp.Description("Chrome instance id"),

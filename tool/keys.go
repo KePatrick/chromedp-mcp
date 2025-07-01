@@ -50,7 +50,7 @@ func SendKeyHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Call
 	}
 	
     if len(elements) == 0 {
-		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again or use screenshot for anlalyze", selector)), nil
     }
     
     htmlResults, err := convertNodesToHTML(id, elements)

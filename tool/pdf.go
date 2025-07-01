@@ -34,7 +34,7 @@ func GenPdfHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallT
 	url := request.GetString("url", "")
 
 	
-	outputDir := request.GetString("outputDir", "~/pdf_output")
+	outputDir := request.GetString("outputDir", getDefaultDownloadPath())
 	
 	// Check if HTML or URL is provided
 	if html == "" && url == "" {

@@ -12,7 +12,7 @@ import (
 
 func NewNavigateTool() mcp.Tool {
 	return mcp.NewTool("navigate",
-		mcp.WithDescription("Navigate to provided URL and return a clean DOM element tree structure without scripts/styles and textContent"),
+		mcp.WithDescription("Navigate to provided URL and return a clean DOM element tree structure without scripts/styles and textContent, if content is truncated, call the select-element tool to get a deeper DOM tree"),
 		mcp.WithString("url",
 			mcp.Required(),
 			mcp.Description("The URL to navigate"),
@@ -125,7 +125,7 @@ func cleanElement(depth int) string {
             const DANGEROUS_PROTOCOLS = ['javascript:', 'data:', 'vbscript:', 'file:', 'about:', 'blob:'];
             
             function cleanForLLM(element, depth = 0) {
-                if (depth > MAX_DEPTH) return '<div>[Content truncated - max depth reached]</div>';
+                if (depth > MAX_DEPTH) return '[Content truncated - max depth reached]';
                 
                 if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'META', 'LINK', 'IFRAME', 'OBJECT', 'EMBED'].includes(element.tagName)) {
                     return '';

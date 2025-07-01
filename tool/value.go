@@ -48,7 +48,7 @@ func SetValueHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Cal
 		chromedp.Nodes(selector, &elements),
 		)
 	if err != nil || len(elements) < 1{
-		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again or use screenshot for anlalyze", selector)), nil
 	}
 
 	err = mcpcdp.Manager.Execute(id,
@@ -60,7 +60,7 @@ func SetValueHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.Cal
 	}
 
 	if len(elements) == 0 {
-		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again or use screenshot for anlalyze", selector)), nil
 	}
 
 	htmlResults, err := convertNodesToHTML(id, elements)

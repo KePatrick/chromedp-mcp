@@ -58,7 +58,7 @@ func ClickElementHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 		chromedp.Nodes(selector, &elements),
 		)
 	if err != nil || len(elements) < 1{
-		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again", selector)), nil
+		return mcp.NewToolResultError(fmt.Sprintf("No elements found with selector: %s, please check element tree again or use screenshot for anlalyze", selector)), nil
 	}
 
 	// Validate click type
