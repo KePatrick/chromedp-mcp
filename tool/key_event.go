@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	mcpcdp "patrickke/chromedp-mcp/chromedp"
+	mcpcdp "github.com/patrickke/chromedp-mcp/chromedp"
 
 	"github.com/chromedp/cdproto/input"
 	"github.com/chromedp/chromedp"

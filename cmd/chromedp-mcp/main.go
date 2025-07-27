@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"patrickke/chromedp-mcp/chromedp"
-	"patrickke/chromedp-mcp/tool"
+	"github.com/patrickke/chromedp-mcp/chromedp"
+	"github.com/patrickke/chromedp-mcp/tool"
 	"strconv"
 	"time"
 

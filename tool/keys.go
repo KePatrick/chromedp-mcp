@@ -3,7 +3,7 @@ package tool
 import (
 	"context"
 	"fmt"
-	mcpcdp "patrickke/chromedp-mcp/chromedp"
+	mcpcdp "github.com/patrickke/chromedp-mcp/chromedp"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"

@@ -1,4 +1,4 @@
-module patrickke/chromedp-mcp
+module github.com/patrickke/chromedp-mcp
 
 go 1.23
 

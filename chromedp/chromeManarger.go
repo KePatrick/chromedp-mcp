@@ -1,3 +1,5 @@
+// Package chromedp provides a concurrent-safe Chrome browser instance manager
+// with automatic lifecycle management and cleanup for web automation tasks.
 package chromedp
 
 import (

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	cdp "patrickke/chromedp-mcp/chromedp"
+	cdp "github.com/patrickke/chromedp-mcp/chromedp"
 
 	"github.com/chromedp/chromedp"
 	"github.com/mark3labs/mcp-go/mcp"

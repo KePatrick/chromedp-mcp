@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	cdp "patrickke/chromedp-mcp/chromedp"
+	cdp "github.com/patrickke/chromedp-mcp/chromedp"
 	"runtime"
 	"time"
 

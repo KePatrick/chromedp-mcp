@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	mcpcdp "patrickke/chromedp-mcp/chromedp"
+	mcpcdp "github.com/patrickke/chromedp-mcp/chromedp"
 
 	"github.com/chromedp/chromedp"
 	"github.com/mark3labs/mcp-go/mcp"
